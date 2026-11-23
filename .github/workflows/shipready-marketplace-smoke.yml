@@ -16,11 +16,12 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-      - name: Create empty-report fixture
+      - name: Create one-finding fixture
         run: |
           mkdir shipready-smoke-fixture
-          printf '# ShipReady smoke test\n' > shipready-smoke-fixture/README.md
+          printf '%s\n' 'create table public.smoke_example (id integer);' > shipready-smoke-fixture/example.sql
       - uses: deeflect/shipready@v0.2.0
         with:
           path: shipready-smoke-fixture
+          fail-on: none
           comment: true
