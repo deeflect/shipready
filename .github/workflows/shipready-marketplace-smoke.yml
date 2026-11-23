@@ -1,0 +1,26 @@
+name: ShipReady Marketplace smoke test
+
+on: pull_request
+
+jobs:
+  shipready:
+    if: >-
+      github.head_ref == 'shipready-marketplace-smoke-v0.2.0' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Create empty-report fixture
+        run: |
+          mkdir shipready-smoke-fixture
+          printf '# ShipReady smoke test\n' > shipready-smoke-fixture/README.md
+      - uses: deeflect/shipready@v0.2.0
+        with:
+          path: shipready-smoke-fixture
+          comment: true
